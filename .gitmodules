@@ -1,3 +1,6 @@
 [submodule "reveal.js"]
 	path = reveal.js
 	url = https://github.com/hakimel/reveal.js.git
+[submodule "d3pie"]
+	path = d3pie
+	url = https://github.com/benkeen/d3pie.git
