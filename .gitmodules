@@ -4,3 +4,6 @@
 [submodule "d3pie"]
 	path = d3pie
 	url = https://github.com/benkeen/d3pie.git
+[submodule "gitgraph.js"]
+	path = gitgraph.js
+	url = http://github.com/nicoespeon/gitgraph.js.git
