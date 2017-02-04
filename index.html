@@ -43,62 +43,108 @@
             </ul>
           </section>
           <section data-state="pie-shown">
-            <h2>Most popular</h2>
+            <h2>...It's the most popular one!</h2>
 
             <div id="pieChart"></div>
           </section>
         </section>
 
         <section>
-          <h2>The Commit</h2>
-          <ul>
-            <li class="fragment">Snapshot of the project in time</li>
-            <li class="fragment">
-              Contain a reference to the previous commit, allowing them
-              to build on top of each other
-            </li>
-            <li class="fragment">Completely immutable, to make changes either:</li>
+          <section>
+            <h2>The Commit</h2>
             <ul>
-              <li class="fragment">Make a second commit, or</li>
-              <li class="fragment">Delete the commit and replace it</li>
+              <li class="fragment">Snapshot of the project in time</li>
+              <li class="fragment">
+                Contain a reference to the previous commit, allowing
+                them to build on top of each other
+              </li>
+              <li class="fragment">
+                Completely immutable, to make changes either:
+              </li>
+              <ul>
+                <li class="fragment">Make a second commit, or</li>
+                <li class="fragment">
+                  Delete the commit and replace it
+                </li>
+              </ul>
             </ul>
-          </ul>
-          <canvas id="gitGraph"></canvas>
+          </section>
+
+          <section data-state="commits-shown-1">
+            <div class="graphHolder">
+              <canvas id="gitGraph1"></canvas>
+            </div>
+          </section>
+          <section data-state="commits-shown-2">
+            <div class="graphHolder">
+              <canvas id="gitGraph2"></canvas>
+            </div>
+          </section>
+          <section data-state="commits-shown-3">
+            <div class="graphHolder">
+              <canvas id="gitGraph3"></canvas>
+            </div>
+          </section>
         </section>
 
         <section>
-          <h2>What is a Branch?</h2>
-          <ul>
-            <li class="fragment">A linear chain of commits</li>
-            <li class="fragment">
-              A pointer to the commit at the head of the chain
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Concurrent Changes</h2>
-          <ul>
-            <li class="fragment">
-              Branches can split off from one another:
-            </li>
-            <ul>
-              <li class="fragment">
-                To represent different units of work
-              </li>
-              <li class="fragment">
-                If two developers make changes on the same branch at the
-                same time
-              </li>
-            </ul>
-            <li class="fragment">
-              To put branches back together, we have two options:
-            </li>
-            <ul>
-              <li class="fragment">Merge, or</li>
-              <li class="fragment">Rebase</li>
-            </ul>
-          </ul>
+          <section>
+            <h2>Merge Conflicts</h2>
+            <div class="fragment">
+              <pre>
+                William was born in 1028
+                Harold was born in 1022
+                The rightful king of England was unknown
+              </pre>
+            </div>
+            <div class="fragment">
+              <pre>
+                William was born in 1028
+                Harold <b>Hardrada</b> was born in 1022
+                The rightful king of England was unknown
+              </pre>
+              <pre>
+                William<b>, Duke of Normandy,</b> was born in 1028
+                Harold was born in 1022
+                The rightful king of England was unknown
+              </pre>
+            </div>
+            <div class="fragment">
+              <pre>
+                William<b>, Duke of Normandy,</b> was born in 1028
+                Harold <b>Hardrada</b> was born in 1022
+                The rightful king of England was unknown
+              </pre>
+            </div>
+          </section>
+          <section>
+            <div>
+              <pre>
+                William was born in 1028
+                Harold was born in 1022
+                The rightful king of England was unknown
+              </pre>
+            </div>
+            <div class="fragment">
+              <pre>
+                William was born in 1028
+                Harold was born in 1022
+                The rightful king of England was <b>Harold</b>
+              </pre>
+              <pre>
+                William was born in 1028
+                Harold was born in 1022
+                The rightful king of England was <b>William</b>
+              </pre>
+            </div>
+            <div class="fragment">
+              <pre>
+                William was born in 1028
+                Harold was born in 1022
+                The rightful king of England was <b>???</b>
+              </pre>
+            </div>
+          </section>
         </section>
       </div>
     </div>

@@ -91,6 +91,40 @@
         });
     });
 
+    var current_commit;
+
+    var template =
+    {
+        colors: ["#F00", "#e67e22", "#0FF"],
+        arrow:
+        {
+            size: 26
+        },
+        branch:
+        {
+            lineWidth: 5,
+            spacingX: 50,
+            color: "#000"
+        },
+        commit:
+        {
+            spacingY: -100,
+            dot:
+            {
+                size: 20,
+                strokeColor: "#000",
+                strokeWidth: 10
+            },
+            message:
+            {
+                displayAuthor: false,
+                displayBranch: false,
+                displayHash: true,
+                font: "30px monospace"
+            }
+        }
+    };
+
     bake();
 
     Reveal.addEventListener('pie-shown', function()
@@ -103,11 +137,186 @@
         window.setTimeout(bake, 500);
     }, false);
 
+    var gitSlide = function(state, elementId, actions, setup)
+    {
+        var _self = this;
+        this.elementId = elementId;
+        this.steps = actions;
+
+        if (typeof setup === "function")
+        {
+            this.setup = setup;
+        }
+        else
+        {
+            this.step = null;
+        }
+
+        Reveal.addEventListener(state, (function()
+        {
+            _self.init();
+        }), false);
+    };
+
+    gitSlide.prototype.init = (function()
+    {
+        this.git = new GitGraph
+        ({
+            template: template,
+            elementId: this.elementId,
+            reverseArrow: true,
+            initCommitOffsetY: -20
+        });
+
+        this.master = this.git.branch("develop");
+        this.step = 0;
+        var _self = this;
+
+        if (typeof this.setup === "function")
+        {
+            this.setup();
+        }
+
+        Reveal.configure
+        ({
+            keyboard:
+            {
+                32: (function()
+                {
+                    _self.runStep();
+                })
+            }
+        });
+    });
+
+    gitSlide.prototype.runStep = (function()
+    {
+        var step = this.steps[this.step++];
+
+        switch (typeof step)
+        {
+            case "function":
+                step.call(this);
+                break
+            default:
+                this.master.commit(step);
+        }
+
+        if (this.step === this.steps.length)
+        {
+            Reveal.configure({keyboard: {}});
+        }
+    });
+
+    var slide1 = new gitSlide('commits-shown-1', 'gitGraph1',
+    [
+        {
+            message: "Initial Commit",
+            sha1: "e89e7d4"
+        },
+        "Second Commit, ontop of e89e7d4",
+        "Add some new feature",
+        "Fix feature, because it failed QA",
+        "Failed QA again, maybe this'll fix it",
+        "QA found more problems"
+    ]);
+
+    var slide2 = new gitSlide('commits-shown-2', 'gitGraph2',
+    [
+        function()
+        {
+            this.develop = this.git.branch('CB-123');
+            this.develop.commit(
+                "CB-123: Migrate Campaigns"
+            );
+            this.develop.commit(
+                "CB-123: Migrate Templates"
+            );
+        },
+        function()
+        {
+            this.develop2 = this.master.branch
+            ({
+                name: "CB-482",
+                parentCommit: this.master.commits[1]
+            });
+            this.develop2.commit
+            (
+                "CB-482: Fix CSV Downloads"
+            );
+        },
+        function ()
+        {
+            this.develop.commit
+            (
+                'CB-123: Continue development'
+            );
+        },
+        function()
+        {
+            this.develop2.merge(this.master);
+        },
+        function()
+        {
+            this.develop.merge(this.master);
+        }
+    ]);
+
+    slide2.setup = function()
+    {
+        this.git.template.arrow.size = 0;
+        this.master.commit(' ').commit(' ').commit(' ');
+    };
+
+    var slide3 = new gitSlide('commits-shown-3', 'gitGraph3',
+    [
+        function()
+        {
+            this.mysql.commit('MySQL branch');
+        },
+        function()
+        {
+            this.branch1 = this.mysql.branch('CB-34');
+            this.branch1.commit
+            (
+                "CB-34: Migrate Global Admin"
+            );
+            this.branch1.commit
+            (
+                "CB-34: Migrate Global Admin"
+            );
+        },
+        function()
+        {
+            this.branch2 = this.mysql.branch('CB-35');
+            this.branch2.commit
+            (
+                "CB-35: System Language"
+            );
+        },
+        function()
+        {
+            this.branch1.merge(this.mysql);
+            this.branch2.merge(this.mysql);
+        },
+        function()
+        {
+            this.mysql.merge(this.master);
+        }
+    ]);
+
+    slide3.setup = function()
+    {
+        this.git.template.arrow.size = 0;
+        this.master.commit(' ');
+        this.mysql = this.master.branch('mysql');
+    };
+
     Reveal.initialize
     ({
         controls: false,
         progress: true,
-        history: false,
+        history: true,
         center: true,
         transition: 'slide',
 
