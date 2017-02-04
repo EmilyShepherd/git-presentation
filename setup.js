@@ -109,7 +109,10 @@
         progress: true,
         history: false,
         center: true,
-        transition: 'slide'
+        transition: 'slide',
+
+        width: "100%",
+        height: "100%"
     });
 })();
 
