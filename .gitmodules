@@ -1,9 +1,9 @@
 [submodule "reveal.js"]
-	path = reveal.js
+	path = lib/reveal.js
 	url = https://github.com/hakimel/reveal.js.git
 [submodule "d3pie"]
-	path = d3pie
+	path = lib/d3pie
 	url = https://github.com/benkeen/d3pie.git
 [submodule "gitgraph.js"]
-	path = gitgraph.js
+	path = lib/gitgraph.js
 	url = http://github.com/nicoespeon/gitgraph.js.git
