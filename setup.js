@@ -95,7 +95,7 @@
 
     var template =
     {
-        colors: ["#F00", "#e67e22", "#0FF"],
+        colors: ["#F00", "#e67e22", "#00F"],
         arrow:
         {
             size: 26
@@ -311,6 +311,79 @@
         this.master.commit(' ');
         this.mysql = this.master.branch('mysql');
     };
+
+    var slide4 = new gitSlide('commits-shown-4', 'gitGraph4',
+    [
+        function()
+        {
+            this.branchA.merge(this.master);
+        },
+        function()
+        {
+            this.branchC = this.master.branch
+            ({
+                name: 'loading-spinner',
+                commitDefaultOptions:
+                {
+                    color: '#00F'
+                }
+            });
+            this.branchC.commit('Loading Spinner (Copy of 644e4d1)');
+            this.branchC.commit('More loading spinners! (Copy of 0b0b00d)');
+        },
+        function()
+        {
+            this.branchB.commits.forEach(function(el)
+            {
+                el.messageColor = "#0FF";
+                el.dotColor = "#0FF";
+            });
+            this.git.render();
+        },
+        function()
+        {
+            this.branchC.merge(this.master);
+        }
+    ]);
+
+    slide4.setup = function()
+    {
+        this.git.template.arrow.size = 0;
+        this.master.commit(' ');
+        this.branchA = this.master.branch('angular-js');
+        this.branchA.commit('Angular JS');
+        this.branchB = this.master.branch('loading-spinner');
+        this.branchB.commit
+        ({
+            message: 'Loading Spinner',
+            sha1: '644e4d1'
+        }).commit
+        ({
+            message: 'More loading spinners!',
+            sha1: '0b0b00d'
+        });
+        this.branchA.commit('Angular JS');
+    };
+
+    var slide5 = new gitSlide('commits-shown-5', 'gitGraph5',
+    [
+        function()
+        {
+            this.branchA.merge(this.master);
+        }
+    ]);
+
+    slide5.setup = function()
+    {
+        this.git.template.arrow.size = 0;
+        this.master.commit(' ').commit(' ');
+        this.branchA = this.master.branch('harold');
+        this.branchB = this.master.branch('william');
+        this.branchB.commit('William is king!');
+        this.branchA.commit('Harold is king!');
+    };
+
+  window.__ = slide5;
 
     Reveal.initialize
     ({

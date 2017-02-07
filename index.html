@@ -89,6 +89,29 @@
 
         <section>
           <section>
+            <h2>Rebasing</h2>
+            <ul>
+              <li class="fragment">
+                Concurrent changes are very common in git workflows
+              </li>
+              <li class="fragment">
+                Sometimes we realise we need something in our branch
+                that was added to another
+              </li>
+              <li class="fragment">
+                Welcome 'Rebasing'
+              </li>
+            </ul>
+          </section>
+          <section data-state="commits-shown-4">
+            <div class="graphHolder">
+              <canvas id="gitGraph4"></canvas>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
             <h2>Merge Conflicts</h2>
             <div class="fragment">
               <pre>
@@ -143,6 +166,22 @@
                 Harold was born in 1022
                 The rightful king of England was <b>???</b>
               </pre>
+            </div>
+          </section>
+          <section data-state="commits-shown-5">
+            <div class="graphHolder">
+              <canvas id="gitGraph5"></canvas>
+              <div style="position: relative; bottom: 50px;">
+                <pre class="fragment" content-editable>
+                    William was born in 1028
+                    Harold was born in 1022
+                    &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+                    The rightful king of England was William
+                    =======
+                    The rightful king of England was Harold
+                    &gt;&gt;&gt;&gt;&gt;&gt;&gt; develop
+                </pre>
+              </div>
             </div>
           </section>
         </section>
