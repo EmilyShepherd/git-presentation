@@ -69,7 +69,38 @@ body {
     height: 526px;
 }
 
+.col
+{
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+}
+
+.reveal .col pre
+{
+    width: 400px;
+    height: 150px;
+}
+
+.reveal pre.cmd
+{
+    color: white;
+    background: black;
+    border: 2px solid grey;
+    width: 730px;
+    height: 580px;
+    box-shadow: 3px 3px 5px black;
+    vertical-align: top;
+    overflow-y: scroll;
+}
+
 #gitGraph, .graphHolder
 {
     height: 900px;
+}
+
+#inlineGit, #inlineGitInner
+{
+    width: 600px !important;
+    height: 580px;
 }

@@ -542,6 +542,286 @@
         document.getElementById('typing2').style.visibility = 'hidden';
     };
 
+    (function()
+    {
+        var fileA = document.getElementById('fileA');
+        var fileB = document.getElementById('fileB');
+        var cmd = document.getElementById('cmd');
+        var cmdline = document.getElementById('cmdline');
+        var hi_js = document.getElementById('hi_js');
+
+        var typeCmd = function(command, output, cb)
+        {
+            typeLetters(cmdline, command + "\n", function()
+            {
+                if (output)
+                {
+                    var span = document.createElement('span');
+                    span.style.color = 'green';
+                    cmd.appendChild(span);
+                    span.innerText = output + "\n";
+                }
+
+                span = document.createTextNode('/project> ');
+                cmd.appendChild(span);
+
+                cmdline = document.createElement('span');
+                cmd.appendChild(cmdline);
+
+                document.getElementById('cmd_holder').scrollTop = 9999999;
+
+                if (typeof cb === 'function')
+                {
+                    cb();
+                }
+            });
+        };
+
+        var slide7 = new gitSlide('cmd', 'gitGraph7',
+        [
+            function()
+            {
+                typeCmd('git init', 'Initialized empty git repository in /project');
+            },
+            function()
+            {
+                typeCmd
+                (
+                    'git status',
+                    "On branch master\n\nUntracked files:\n\n" +
+                    "myFile.html\nmyOtherFile.js"
+                );
+            },
+            function()
+            {
+                typeCmd
+                (
+                    'git add myFile.html myOtherFile.js'
+                );
+            },
+            function()
+            {
+                typeCmd
+                (
+                    'git status',
+                    "On branch master\n\nChanges to be committed:\n\n" +
+                    "myFile.html\nmyOtherFile.js"
+                );
+            },
+            function()
+            {
+                var _self = this;
+                typeCmd
+                (
+                    'git commit -m "My First Commit!"',
+                    "[master (root-commit 6988c2a] My First Commit!\n" +
+                    " 2 files changed, 5 insertions(+)\n" +
+                    " create mode 100644 myFile.html\n" +
+                    " create mode 100644 myOtherFile.js",
+                    function()
+                    {
+                        _self.master.commit('My First Commit!');
+                    }
+                );
+            },
+            function()
+            {
+                typeCmd
+                (
+                    'git status',
+                    "On branch master\nNothing to commit, working tree clean"
+                );
+            },
+            function()
+            {
+                deleteLetters(hi_js, 12, function()
+                {
+                    typeLetters
+                    (
+                        hi_js,
+                        "console.log('Hello There');\n" +
+                        "console.log('Git is fun!');"
+                    );
+                });
+            },
+            function()
+            {
+                typeCmd
+                (
+                    'git diff',
+                    "diff --git a/myOtherFile.js a/myOtherFile.js\n" +
+                    "index 08ee1af..9e8bb6b 100644\n" +
+                    "--- a/myOtherFile.js\n" +
+                    "+++ b/myOtherFile.js\n" +
+                    "@@ -1,3 +1,4 @@\n" +
+                    "function() {\n" +
+                    "-alert('Hi');\n" +
+                    "+console.log('Hello There')\n" +
+                    "+console.log('Git is fun!)\n" +
+                    "}"
+                );
+            },
+            function()
+            {
+                document.getElementById('html_html').innerText = 'HTML';
+            },
+            function()
+            {
+                typeCmd
+                (
+                    'git status',
+                    "On branch master\nChanges not staged for commit:\n\n" +
+                    "modified: myFile.html\n" +
+                    "modified: myOtherFile.js"
+                );
+            },
+            function()
+            {
+                var _self = this;
+                typeCmd
+                (
+                    'git add myFile.html', '', function()
+                    {
+                        typeCmd
+                        (
+                            'git commit -m "Fix HTML misspelling"',
+                            "[master db6991e] Fix HTML misspelling\n" +
+                            " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                            function()
+                            {
+                                _self.master.commit('Fix HTML misspelling');
+                            }
+                        );
+                    }
+                );
+            },
+            function()
+            {
+                typeCmd
+                (
+                    'git status',
+                    "On branch master\nChanges not staged for commit:\n\n" +
+                    "modified: myOtherFile.js"
+                );
+            },
+            function()
+            {
+                var _self = this;
+                typeCmd
+                (
+                    'git checkout -b some-js-changes',
+                    "M  myOtherFile.js\n" +
+                    "Switched to a new branch 'some-js-changes'",
+                    function()
+                    {
+                        _self.jsBranch = _self.master.branch('some-js-changes');
+                    }
+                );
+            },
+            function ()
+            {
+                var _self = this;
+                typeCmd
+                (
+                    'git add myOtherFile.js', '', function()
+                    {
+                        typeCmd
+                        (
+                            'git commit -m "Change the Javascript"',
+                            "[some-js-changes db6991e] Change the Javascript\n" +
+                            " 1 file changed, 2 insertions(+), 1 deletion(-)",
+                            function()
+                            {
+                                _self.jsBranch.commit('Change the Javascript');
+                            }
+                        );
+                    }
+                );
+            },
+            function()
+            {
+                typeCmd
+                (
+                    'git show',
+                    "commit db6991edb6991edb6991edb6991edb6991e\n" +
+                    "Author: Emily Shepherd <emily.shepherd@wearetwogether.com>\n" +
+                    "Date: Wedesday Feb 8 10:30:00 2017 +0000\n\n" +
+                    "Change the Javascript\n\n" +
+                    "diff --git a/myOtherFile.js a/myOtherFile.js\n" +
+                    "index 08ee1af..9e8bb6b 100644\n" +
+                    "--- a/myOtherFile.js\n" +
+                    "+++ b/myOtherFile.js\n" +
+                    "@@ -1,3 +1,4 @@\n" +
+                    "function() {\n" +
+                    "-alert('Hi');\n" +
+                    "+console.log('Hello There')\n" +
+                    "+console.log('Git is fun!)\n" +
+                    "}"
+                );
+            },
+            function()
+            {
+                typeCmd
+                (
+                    'git checkout master',
+                    "Switched to branch 'master'",
+                    function()
+                    {
+                        hi_js.innerText = "alert('Hi');";
+                    }
+                );
+            },
+            function()
+            {
+                var extra_html = document.getElementById('extra_html');
+                typeLetters(extra_html, '<p>HTML is <b>crazy</b></p>');
+            },
+            function()
+            {
+                var _self = this;
+                typeCmd
+                (
+                    'git add myFile.html', '', function()
+                    {
+                        typeCmd
+                        (
+                            'git commit -m "More HTML"',
+                            "[master db6991e] More HTML\n" +
+                            " 1 file changed, 1 insertion(+)",
+                            function()
+                            {
+                                _self.master.commit('More HTML');
+                            }
+                        );
+                    }
+                );
+            },
+            function()
+            {
+                var _self = this;
+                typeCmd
+                (
+                    'git merge some-js-changes',
+                    "Merge made by the 'recursive' strategy.\n" +
+                    " myOtherFile.js | 3 ++-\n" +
+                    " 1 file changes, 2 insertions(+), 1 deletion(-)",
+                    function()
+                    {
+                        _self.jsBranch.merge(_self.master);
+                        hi_js.innerText = "console.log('Hello There');\n" +
+                          "console.log('Git is fun!');"
+                    }
+                );
+            }
+        ]);
+
+        slide7.setup = function()
+        {
+            this.git.template.commit.message.displayHash = false;
+            this.git.template.arrow.size = 0;
+        };
+    })();
+
     Reveal.initialize
     ({
         controls: false,
