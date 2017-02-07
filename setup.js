@@ -137,6 +137,43 @@
         window.setTimeout(bake, 500);
     }, false);
 
+    var deleteLetters = function(el, letters, cb)
+    {
+        var run = function()
+        {
+            if (letters-- > 0)
+            {
+                el.innerText = el.innerText.substr(0, el.innerText.length - 1);
+                window.setTimeout(run, 20);
+            }
+            else if (typeof cb === 'function')
+            {
+                cb();
+            }
+        };
+
+        run();
+    };
+
+    var typeLetters = function(el, letters, cb)
+    {
+        var run = function()
+        {
+            if (letters.length !== 0)
+            {
+                el.innerText += letters.substr(0, 1);
+                letters = letters.substr(1);
+                window.setTimeout(run, 20);
+            }
+            else if (typeof cb === 'function')
+            {
+                cb();
+            }
+        };
+
+        run();
+    };
+
     var gitSlide = function(state, elementId, actions, setup)
     {
         var _self = this;
@@ -370,6 +407,62 @@
         function()
         {
             this.branchA.merge(this.master);
+        },
+        function()
+        {
+            document.getElementById('typing').style.visibility = 'visible';
+        },
+        function()
+        {
+            deleteLetters
+            (
+                document.getElementById('lineB'),
+                64,
+                function()
+                {
+                    deleteLetters
+                    (
+                        document.getElementById('lineA'),
+                        16
+                    );
+                }
+            );
+        },
+        function()
+        {
+            deleteLetters
+            (
+                document.getElementById('person'),
+                7,
+                function()
+                {
+                    typeLetters
+                    (
+                        document.getElementById('person'),
+                        'Harold'
+                    );
+                }
+            );
+        },
+        function()
+        {
+            deleteLetters
+            (
+                document.getElementById('person'),
+                6,
+                function()
+                {
+                    typeLetters
+                    (
+                        document.getElementById('person'),
+                        'either Harold or William'
+                    );
+                }
+            );
+        },
+        function()
+        {
+            this.branchB.merge(this.master);
         }
     ]);
 
@@ -381,9 +474,73 @@
         this.branchB = this.master.branch('william');
         this.branchB.commit('William is king!');
         this.branchA.commit('Harold is king!');
+        document.getElementById('typing').style.visibility = 'hidden';
     };
 
-  window.__ = slide5;
+    var slide6 = new gitSlide('commits-shown-6', 'gitGraph6',
+    [
+        function()
+        {
+            document.getElementById('typing2').style.visibility = 'visible';
+        },
+        function()
+        {
+            deleteLetters
+            (
+                document.getElementById('lineB2'),
+                64,
+                function()
+                {
+                    deleteLetters
+                    (
+                        document.getElementById('lineA2'),
+                        16,
+                        function()
+                        {
+                            deleteLetters
+                            (
+                                document.getElementById('person2'),
+                                7,
+                                function()
+                                {
+                                    typeLetters
+                                    (
+                                        document.getElementById('person2'),
+                                        'Harold, then William invaded'
+                                    );
+                                }
+                            );
+                        }
+                    );
+                }
+            );
+        },
+        function()
+        {
+            this.branchB.commits.forEach(function(el)
+            {
+                el.messageColor = "#0FF";
+                el.dotColor = "#0FF";
+            });
+            this.branchC = this.master.branch
+            ({
+                name: 'william',
+                commitDefaultOptions: { color: '#00F' }
+            });
+            this.branchC.commit('William is king!');
+        },
+        function()
+        {
+            this.branchC.merge(this.master);
+        }
+    ]);
+
+    slide6.setup = function()
+    {
+        slide5.setup.call(this);
+        this.branchA.merge(this.master);
+        document.getElementById('typing2').style.visibility = 'hidden';
+    };
 
     Reveal.initialize
     ({
